@@ -12,7 +12,7 @@ COPY . ./
 
 # Install production dependencies.
 RUN pip install --no-cache-dir -r requirements.txt
-#RUN python -m nltk.downloader all -d /usr/local/nltk_data
+RUN python -m nltk.downloader all -d /usr/local/nltk_data
 
 # Run the web service on container startup. Here we use the gunicorn
 # webserver, with one worker process and 8 threads.
