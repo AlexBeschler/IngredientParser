@@ -164,6 +164,7 @@ id2label = {v: k for k, v in label2id.items()}
 def parse_ingredients():
     req = request.get_json()
     ingredients = req['ingredients']
+    print(ingredients)
     res = []
     for ingredient in ingredients:
         input_ids, tag_ids, sent = parser(ingredient, vocab)
@@ -181,8 +182,9 @@ def parse_ingredients():
                 }
                 if b['tag'] == 'NAME':
                     serialized_ingredient.append(b['text'])
-            res.append(' '.join(serialized_ingredient))
-    
+            output = ' '.join(serialized_ingredient)
+            if output != '':
+                res.append(' '.join(serialized_ingredient))
     return res
 
 if __name__ == "__main__":
