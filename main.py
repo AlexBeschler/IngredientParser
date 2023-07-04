@@ -134,7 +134,7 @@ def convert_number(ingredient):
     ingredient = ingredient.replace("⅞", "0.875")
     return ingredient
 
-with open('config.json', "r") as fp:
+with open('./data/config.json', "r") as fp:
     config = json.load(fp)
 
 with open('./data/vocab.pkl', 'rb') as f:
