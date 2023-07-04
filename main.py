@@ -6,7 +6,7 @@ import pickle
 import torch
 import torch.nn as nn
 
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -140,14 +140,6 @@ with open('./data/config.json', "r") as fp:
 with open('./data/vocab.pkl', 'rb') as f:
     vocab = pickle.load(f)
 
-ingredients = [
-    '16 tablespoons (227g) unsalted butter, at room temperature, at least 65°F*',
-    '2 cups (397g) granulated sugar',
-    '1 teaspoon salt',
-    '4 large eggs, at room temperature',
-    '2 teaspoons baking powder'
-]
-
 def parser(ingredient, vocab):
     tag2ids = {'RBS': 0, 'CD': 1, 'SYM': 2, 'DT': 3, '$': 4, "''": 5, 'TO': 6, 'PDT': 7, 'WP': 8, 'RBR': 9, 'POS': 10,
                'VBD': 11, 'PRP$': 12, 'IN': 13, 'VBN': 14, 'VBP': 15, 'FW': 16, 'JJR': 17, 'NNP': 18, 'JJS': 19,
@@ -166,10 +158,11 @@ model.load_state_dict(torch.load("data/model.pt"))
 label2id = {'DF': 0, 'NAME': 1, 'O': 2, 'QUANTITY': 3, 'SIZE': 4, 'STATE': 5, 'TEMP': 6, 'UNIT': 7}
 id2label = {v: k for k, v in label2id.items()}
 
-@app.route("/")
+@app.route("/", methods=['POST'])
 def parse_ingredients():
+    req = request.get_json()
+    ingredients = req['ingredients']
     res = []
-
     for ingredient in ingredients:
         input_ids, tag_ids, sent = parser(ingredient, vocab)
         with torch.no_grad():
