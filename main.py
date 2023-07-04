@@ -162,7 +162,7 @@ def parser(ingredient, vocab):
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = IngredientParser(vocab.word_embeddings, config["model"]).to(device)
-model.load_state_dict(torch.load("saved_model_path/model.pt"))
+model.load_state_dict(torch.load("data/model.pt"))
 label2id = {'DF': 0, 'NAME': 1, 'O': 2, 'QUANTITY': 3, 'SIZE': 4, 'STATE': 5, 'TEMP': 6, 'UNIT': 7}
 id2label = {v: k for k, v in label2id.items()}
 
